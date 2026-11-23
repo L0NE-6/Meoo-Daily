@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Local configuration and credentials
+.env
+.env.*
+*.local
+*_cookie
+*_cookies
+*cookie*.json
+*cookies*.json
+*token*.json
+*credentials*.json
+*auth*.json
+*login_result*.json
+
+# Runtime reports and logs
+meoo-report*.json
+meoo-report*.jsonl
+*.log
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
