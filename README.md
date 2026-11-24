@@ -6,26 +6,28 @@
 
 **Meoo（秒悟）每日登录积分 · 多账号单文件脚本 · JSONL 结果回读**
 
-> 当前版本：**v1.0.1**（2026-11-24） · 由 L0NE-6 原创维护的 Meoo 每日登录积分领取仓库
+> 当前版本：**v1.0.1**（2026-11-24） · 认证方式：网页 Cookie
 
-[简体中文](README.md) · [English](docs/README.en.md) · [繁體中文](docs/README.zh-Hant.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Português (BR)](docs/README.pt-BR.md)
+**[简体中文](README.md)** · [English](docs/README.en.md) · [繁體中文](docs/README.zh-Hant.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Português (BR)](docs/README.pt-BR.md)
 
-🪪 Cookie 登录 · 🎁 每日积分 · 👥 多账号隔离 · 🧾 JSONL 报告 · 📢 可选推送 · 🐧 青龙友好 · ☁️ GitHub Actions
+Cookie 登录 · 每日积分 · 多账号隔离 · JSONL 报告 · 可选推送 · 青龙 · Actions
 
-<img src="https://img.shields.io/badge/Version-v1.0.1-2ea44f?style=for-the-badge&logo=github" />
-<img src="https://img.shields.io/github/stars/L0NE-6/Meoo-Daily?style=for-the-badge&label=Stars&color=FFC75F&logo=github" />
-<img src="https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-<img src="https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20%E9%9D%92%E9%BE%99-4EAA25?style=for-the-badge&logo=linux&logoColor=white" />
-<img src="https://img.shields.io/badge/Deploy-%E9%9D%92%E9%BE%99%20%7C%20GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" />
+<img src="https://img.shields.io/badge/Version-v1.0.1-2ea44f?style=for-the-badge&logo=github" alt="Version v1.0.1" />
+<img src="https://img.shields.io/github/stars/L0NE-6/Meoo-Daily?style=for-the-badge&label=Stars&color=FFC75F&logo=github" alt="Stars" />
+<img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.9+" />
+<img src="https://img.shields.io/badge/Qinglong-ready-4EAA25?style=for-the-badge" alt="Qinglong" />
+<img src="https://img.shields.io/badge/GitHub%20Actions-supported-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
 
-[✨ 速览](#-30-秒速览) · [🧠 领取原理](#-每日登录领取原理) · [🚀 青龙部署](#-部署方式一青龙面板) · [☁️ Actions](#-部署方式二github-actions) · [🔧 环境变量](#-环境变量) · [🚫 使用边界](#usage-policy) · [✦ 星轨](#-星轨-star-trail)
+[边界](#policy) · [速览](#overview) · [协议](#protocol) · [凭据](#credentials) · [快速开始](#quickstart) · [青龙](#qinglong) · [Actions](#actions) · [CLI](#cli) · [结果码](#result-codes) · [成功判据](#success) · [测试](#tests) · [目录](#layout) · [版本](#release) · [赞赏](#donate) · [反馈](#feedback)
 
 </div>
 
 ---
 
-<a id="usage-policy"></a>
-## 🚫 使用边界与转载声明
+<a id="policy"></a>
+## 🚫 使用边界
+
+### 🚫 使用边界与转载声明
 
 > [!IMPORTANT]
 > **官方版本永久免费。** 未经作者书面许可，禁止付费包装、搬运引流、冒充作者，或使用作者身份与二维码制造官方授权假象。
@@ -36,7 +38,12 @@
 
 ---
 
+---
+
+<a id="overview"></a>
 ## ✨ 30 秒速览
+
+### ✨ 30 秒速览
 
 | 维度 | 说明 |
 | :--- | :--- |
@@ -52,7 +59,37 @@
 
 ---
 
-## 🧠 每日登录领取原理
+---
+
+<a id="what"></a>
+## 🧭 这是什么
+
+---
+
+<a id="protocol"></a>
+## 🔁 协议与回读
+
+### 核心请求
+
+```http
+GET https://meoo.com/api/mc/entitlement/init
+Cookie: <完整网页 Cookie>
+```
+
+该 GET 请求本身就会触发每日登录积分发放。`--status` 只改变报告文案，不是只读请求。
+
+### 回读字段
+
+| 字段 | 验收用途 |
+| :--- | :--- |
+| `dailyLoginGranted` | 本次是否实际发放积分 |
+| `dailyLoginGrantAmount` | 本次发放数量 |
+| `dailyLoginSkipReason` | 未发放原因，`ALREADY_GRANTED_TODAY` 表示今日已领 |
+| `dailyLoginBalanceAfter` | 请求后的积分余额 |
+
+HTTP 200 不等于成功，脚本会继续校验 `data` 与上述业务字段。
+
+### 🧠 每日登录领取原理
 
 L0NE-6 原创维护的脚本使用 Meoo 每日登录接口：
 
@@ -74,7 +111,29 @@ Cookie: <完整网页 Cookie>
 
 ---
 
-## 🚀 部署方式一：青龙面板
+---
+
+<a id="credentials"></a>
+## 🔑 凭据与账号
+
+| 变量 | 必需 | 说明 |
+| :--- | :---: | :--- |
+| `MEOO_COOKIES` | 二选一 | 多账号，每行 `备注|Cookie`，优先于单账号变量 |
+| `MEOO_COOKIE` | 二选一 | 单账号完整网页 Cookie |
+
+Cookie 属于账号级凭据。脚本输出会对 Cookie 做脱敏，README、日志与 Issue 中也不应出现完整值。
+
+---
+
+<a id="quickstart"></a>
+## 🚀 快速开始
+
+---
+
+<a id="qinglong"></a>
+## 🐧 青龙面板
+
+### 🚀 部署方式一：青龙面板
 
 | 步骤 | 操作 |
 | :---: | :--- |
@@ -87,7 +146,12 @@ Cookie: <完整网页 Cookie>
 
 ---
 
-## ☁️ 部署方式二：GitHub Actions
+---
+
+<a id="actions"></a>
+## ☁️ GitHub Actions
+
+### ☁️ 部署方式二：GitHub Actions
 
 仓库已内置 [`.github/workflows/meoo.yml`](.github/workflows/meoo.yml)：
 
@@ -109,7 +173,12 @@ GitHub 的 `schedule` 使用 UTC，并且可能延迟。当前工作流设置为
 
 ---
 
-## 🔧 环境变量
+---
+
+<a id="cli"></a>
+## ⌨️ CLI 与环境变量
+
+### 🔧 环境变量
 
 | 变量 | 必填 | 说明 |
 | :--- | :---: | :--- |
@@ -133,7 +202,7 @@ sessionid=REPLACE_WITH_COOKIE; other_cookie=REPLACE_ME
 
 > Cookie 等同于登录凭据。示例只含占位符，请勿把真实 Cookie 写入仓库、Issue、日志或截图。
 
-### 本地运行
+#### 本地运行
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -144,7 +213,26 @@ python .\meoo_daily.py --status
 
 ---
 
+---
+
+<a id="result-codes"></a>
+## 🚦 结果码
+
+| 结果 | 含义 | 退出码影响 |
+| :--- | :--- | :--- |
+| `GRANTED` | 本次实际发放每日积分 | 成功 |
+| `ALREADY_GRANTED` | 今日已领取，属于中性成功 | 成功 |
+| `FAILED` | 登录失效、风控、响应契约异常或网络失败 | 失败 |
+| 配置错误 | Cookie 格式不合法或账号为空 | 退出码 2 |
+
+---
+
+<a id="success"></a>
 ## ✅ 成功判据
+
+只有 `dailyLoginGranted=true` 或 `dailyLoginSkipReason=ALREADY_GRANTED_TODAY` 且业务信封完整时才算当日成功。
+
+### ✅ 成功判据
 
 | 结果 | 是否成功 | 含义 |
 | :--- | :---: | :--- |
@@ -160,7 +248,21 @@ python .\meoo_daily.py --status
 
 ---
 
-## 🧪 测试与质量检查
+---
+
+<a id="tests"></a>
+## 🧪 测试
+
+```powershell
+$env:PYTHONUTF8 = "1"
+python -m unittest discover -s tests -v
+python -m py_compile meoo_daily.py
+python -m ruff check .
+```
+
+单测验证账号解析、响应分类、脱敏与推送分支，不替代真实 Cookie 的服务端积分回读。
+
+### 🧪 测试与质量检查
 
 ```powershell
 python -m unittest discover -s tests -v
@@ -172,7 +274,25 @@ python -m ruff check .
 
 ---
 
-## 🔒 隐私说明
+---
+
+<a id="design"></a>
+## 🧱 设计原则
+
+- 单文件自包含，运行期仅依赖 `requests`。
+- 账号逐条隔离，单账号失败不阻断其他账号。
+- 以业务字段判定成功，不以 HTTP 200 冒充到账。
+- 输出固定为 JSONL，便于青龙、Actions 与本地日志处理。
+- Cookie 不进入报告、异常文本或推送正文。
+
+---
+
+<a id="privacy"></a>
+## 🔒 隐私与安全
+
+凭据、状态文件、日志与运行缓存都属于账号级数据。仓库和 Issue 中只保留脱敏片段。
+
+### 🔒 隐私说明
 
 本仓库不包含账号、手机号、Token、Cookie、JWT 或本机认证文件。Cookie 只通过环境变量、青龙变量或 GitHub Secrets 注入。
 
@@ -186,7 +306,12 @@ python -m ruff check .
 
 ---
 
+---
+
+<a id="layout"></a>
 ## 📁 目录结构
+
+### 📁 目录结构
 
 ```text
 Meoo-Daily/
@@ -213,7 +338,14 @@ Meoo-Daily/
 
 ---
 
-## 📦 版本
+---
+
+<a id="release"></a>
+## 📦 版本与发布
+
+当前标签为 `v1.0.1`。发布包应只包含脚本、README、文档、许可证与依赖清单，不带 Cookie、缓存或日志。
+
+### 📦 版本
 
 - 当前版本：`v1.0.1`
 - 首次独立发布：2026-11-23
@@ -221,48 +353,46 @@ Meoo-Daily/
 
 ---
 
+---
+
+<a id="disclaimer"></a>
 ## ⚠️ 免责声明
 
-本项目用于个人学习和合法的个人自动化。Meoo 的活动规则、接口、积分数量和账号资格由平台决定；使用前请确认对应服务条款，并自行承担账号、网络和活动变化带来的风险。
+仓库内容用于账号持有人维护自身权益。使用前应确认账号、服务条款与所在地规则；作者不对账号限制、接口变化、网络失败或第三方部署造成的损失作出保证。
+
+完整展示与转载规则见 [NOTICE.md](NOTICE.md)。
 
 ---
 
-## ☕ 支持与投喂
+<a id="donate"></a>
+## ☕ 赞赏码
 
-脚本完全免费，无广告、无功能限制。如果它确实帮你省了时间，欢迎自愿赞赏；不影响任何功能，也不影响 Issue 响应。
+### 支持与投喂
 
-<p align="center">
-  <img src="assets/donate-wechat.png" width="260" alt="微信赞赏码" />
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/donate-alipay.jpg" width="260" alt="支付宝收款码" />
-</p>
-<p align="center"><sub>💚 微信支付（左） &nbsp;|&nbsp; 💙 支付宝（右）</sub></p>
-
-> 收款码仅用于向作者自愿赞赏。任何第三方以代下载、代部署、内部资源或会员群为由收费，均与作者无关。
-
----
-
-## 💬 反馈与贡献
-
-- [提交 Issue](https://github.com/L0NE-6/Meoo-Daily/issues)
-- [发起 Pull Request](https://github.com/L0NE-6/Meoo-Daily/pulls)
-
-反馈问题时，请附上脱敏后的结果 JSON、运行环境和复现步骤。不要上传真实 Cookie、手机号或完整账号日志。
-
----
-
-## ✦ 星轨 Star Trail
-
-<a href="https://star-history.com/#L0NE-6/Meoo-Daily&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=L0NE-6/Meoo-Daily&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=L0NE-6/Meoo-Daily&type=Date" />
-    <img alt="Meoo Daily Star Trail" src="https://api.star-history.com/svg?repos=L0NE-6/Meoo-Daily&type=Date" />
-  </picture>
-</a>
-
----
+如果这个项目节省了你的时间，可以扫码支持维护。赞赏完全自愿，不影响代码、文档与 Issue 处理。
 
 <div align="center">
-  <sub>L0NE-6 · DAILY SIGNAL &nbsp;|&nbsp; 点个 <b>Star</b>，让下一轮自动化有迹可循 ✨</sub>
+<table>
+<tr>
+<td align="center"><strong>微信赞赏码</strong><br /><img src="assets/donate-wechat.png" width="260" alt="微信赞赏码" /></td>
+<td align="center"><strong>支付宝赞赏码</strong><br /><img src="assets/donate-alipay.jpg" width="260" alt="支付宝赞赏码" /></td>
+</tr>
+</table>
 </div>
+
+---
+
+<a id="feedback"></a>
+## 💬 反馈与 Star History
+
+### 反馈与贡献
+
+- [提交 Issue](https://github.com/L0NE-6/Meoo-Daily/issues)
+- [提交 Pull Request](https://github.com/L0NE-6/Meoo-Daily/pulls)
+- [查看更新日志](CHANGELOG.md)
+
+反馈请附脱敏日志、复现步骤、运行环境与实际结果。不要贴 Token、Cookie、JWT、手机号或运行状态文件。
+
+<a href="https://star-history.com/#L0NE-6/Meoo-Daily&Date">
+  <img src="https://api.star-history.com/svg?repos=L0NE-6/Meoo-Daily&type=Date" alt="Meoo-Daily Star History" />
+</a>
