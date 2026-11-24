@@ -6,13 +6,13 @@
 
 **Meoo（秒悟）每日登录积分 · 多账号单文件脚本 · JSONL 结果回读**
 
-> 当前版本：**v1.0.0**（2026-11-23） · 由 L0NE-6 原创维护的 Meoo 每日登录积分领取仓库
+> 当前版本：**v1.0.1**（2026-11-24） · 由 L0NE-6 原创维护的 Meoo 每日登录积分领取仓库
 
 [简体中文](README.md) · [English](docs/README.en.md) · [繁體中文](docs/README.zh-Hant.md) · [日本語](docs/README.ja.md) · [한국어](docs/README.ko.md) · [Português (BR)](docs/README.pt-BR.md)
 
 🪪 Cookie 登录 · 🎁 每日积分 · 👥 多账号隔离 · 🧾 JSONL 报告 · 📢 可选推送 · 🐧 青龙友好 · ☁️ GitHub Actions
 
-<img src="https://img.shields.io/badge/Version-v1.0.0-2ea44f?style=for-the-badge&logo=github" />
+<img src="https://img.shields.io/badge/Version-v1.0.1-2ea44f?style=for-the-badge&logo=github" />
 <img src="https://img.shields.io/github/stars/L0NE-6/Meoo-Daily?style=for-the-badge&label=Stars&color=FFC75F&logo=github" />
 <img src="https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white" />
 <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20%E9%9D%92%E9%BE%99-4EAA25?style=for-the-badge&logo=linux&logoColor=white" />
@@ -95,6 +95,7 @@ Cookie: <完整网页 Cookie>
 - `schedule`：每天执行一次 `python meoo_daily.py`；
 - `workflow_dispatch`：支持手动运行测试和领取；
 - 控制台 JSONL 会转换为合法 JSON 数组 `meoo-report.json`，并保留原始 `meoo-report.jsonl`；即使脚本失败也会尝试上传 artifact。
+- 未配置 `MEOO_COOKIES` / `MEOO_COOKIE` 时，定时领取会输出明确 SKIPPED notice 并成功结束；配置凭据后，脚本异常仍会保持失败状态。
 
 使用步骤：
 
@@ -214,7 +215,7 @@ Meoo-Daily/
 
 ## 📦 版本
 
-- 当前版本：`v1.0.0`
+- 当前版本：`v1.0.1`
 - 首次独立发布：2026-11-23
 - 后续实质更新遵循语义化版本，并保留独立变更记录。
 

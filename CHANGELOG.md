@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.0.1 - 2026-11-24
+
+- Fixed scheduled GitHub Actions runs reporting a configuration error when no
+  Cookie Secrets were configured.
+- Added an explicit credentials preflight: missing credentials produce a
+  visible SKIPPED notice, while configured runs still fail on script errors.
+- Synchronized the Chinese README and all five translated guides with the
+  workflow behavior.
+
 ## v1.0.0 - 2026-11-23
 
 - Split the Meoo daily-login script and tests into an independent

@@ -45,6 +45,7 @@ python .\meoo_daily.py
 ## GitHub Actions
 
 Fork / Import 倉庫後，把 Cookie 加入 Actions Secrets，並手動執行一次。內建的 [workflow](../.github/workflows/meoo.yml) 會在 `push` 時跑測試、在 `schedule` 時每天執行一次領取，將主控台 JSONL 轉成 JSON 陣列，並上傳兩種報告格式。
+未設定 Cookie Secret 時，定時領取會輸出明確 SKIPPED notice 並成功結束；設定憑據後，腳本異常仍會保持失敗狀態。
 
 ## 成功判據
 

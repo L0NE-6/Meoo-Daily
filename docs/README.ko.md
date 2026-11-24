@@ -45,6 +45,7 @@ python .\meoo_daily.py
 ## GitHub Actions
 
 저장소를 Fork / Import하고 Cookie를 Actions Secret에 등록한 뒤 한 번 수동 실행합니다. 포함된 [workflow](../.github/workflows/meoo.yml)는 `push`에서 테스트를 실행하고, `schedule`에서 하루 한 번 포인트를 받으며 콘솔 JSONL을 JSON 배열로 변환해 두 형식의 보고서를 artifact로 업로드합니다.
+Cookie Secret이 없으면 예약 실행은 명시적인 SKIPPED notice를 남기고 정상 종료합니다. 인증 정보가 설정된 뒤에는 스크립트 오류를 계속 실패로 처리합니다.
 
 ## 성공 기준
 

@@ -45,6 +45,7 @@ second|sessionid=REPLACE_WITH_ANOTHER_COOKIE
 ## GitHub Actions
 
 Fork or import the repository, add the Cookie as an Actions Secret, then run the workflow manually once. The included [workflow](../.github/workflows/meoo.yml) runs tests on `push`, runs the check-in once per day on `schedule`, converts the console JSONL into a JSON array, and uploads both report formats.
+If no Cookie Secret is configured, the scheduled check-in is skipped with an explicit notice; once credentials are present, script failures remain failures.
 
 ## Success criteria
 

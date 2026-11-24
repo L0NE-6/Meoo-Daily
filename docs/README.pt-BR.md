@@ -45,6 +45,7 @@ secundaria|sessionid=REPLACE_WITH_ANOTHER_COOKIE
 ## GitHub Actions
 
 Faça Fork / Import do repositório, adicione o Cookie como Actions Secret e execute o workflow manualmente uma vez. O [workflow](../.github/workflows/meoo.yml) incluído roda testes em `push`, executa uma vez por dia em `schedule`, converte o JSONL do console em uma matriz JSON e envia os dois formatos de relatório como artifact.
+Sem um Cookie Secret configurado, a execução agendada é ignorada com um notice SKIPPED explícito; depois que as credenciais existirem, falhas do script continuam sendo falhas.
 
 ## Critérios de sucesso
 

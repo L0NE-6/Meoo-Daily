@@ -1,6 +1,6 @@
 [project]
 name = "meoo-daily"
-version = "1.0.0"
+version = "1.0.1"
 description = "Meoo daily login credit runner for Qinglong and GitHub Actions"
 readme = "README.md"
 requires-python = ">=3.9"
